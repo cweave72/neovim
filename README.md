@@ -27,7 +27,7 @@ Table of Contents
 
 # Vim Configuration
 
-## How to set up Doc Mike's vimfiles
+## How to set up Doc Mike's vimfiles as the baseline config
 
 Clone Doc Mike's vimfiles repo:
 
@@ -40,7 +40,7 @@ Set up symbolic link:
 
 In .bashrc, set the following variable:
 
-    export VIMUSERLOCALFILES=~/linuxconfig/vimlocal
+    export VIMUSERLOCALFILES=path/to/vimlocal
 
 When you launch `vim`, you should be running Mike's config and the
 vimrc-after.vim found in vimlocal/.
@@ -70,7 +70,7 @@ Neovim looks very interesting and seems to work just fine with Doc Mike's normal
 vim configuration + my vimrc-after.vim.  Below are some notes about how to set
 it up, specifically about handling nvim-only plugins.
 
-### Installing
+### Installing Neovim
 
 Download the desired Neovim AppImage (v0.9.1 at time of writing):
 
@@ -79,7 +79,7 @@ Download the desired Neovim AppImage (v0.9.1 at time of writing):
 (I usually put AppImages in ~/AppImages/)
 Then make it executable:
 
-    chmod u+x nvim.appimage 
+    chmod u+x /path/to/nvim.appimage 
 
 ### Configuring for compatibility with Doc Mike's config
 
