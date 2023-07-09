@@ -1,0 +1,13 @@
+diff --git a/vimrc b/vimrc
+index 301c95d1..66a14543 100644
+--- a/vimrc
++++ b/vimrc
+@@ -951,7 +951,7 @@ set history=10000
+ set autoread
+ 
+ " Setup print options for hardcopy command.
+-set printoptions=paper:letter,duplex:off
++"set printoptions=paper:letter,duplex:off
+ 
+ " Enable the [n/m] message for searching.
+ set shortmess-=S
