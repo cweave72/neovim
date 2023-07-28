@@ -43,13 +43,17 @@ if offline_mode
         "Required by ranger.vim
         Plug plugged . 'bclose.vim'
 
-        Plug plugged . 'undotree'
-
         "Nice colorscheme
         Plug plugged . 'nightfox.vim'
         Plug plugged . 'iceberg.vim'
         Plug plugged . 'melange'
         Plug plugged . 'sonokai'
+
+        Plug plugged . 'undotree'
+
+        " cscope_maps dependencies
+        Plug plugged . 'cscope_maps.nvim'
+        Plug plugged . 'which-key.nvim'
 
     endif
 else
@@ -90,9 +94,10 @@ else
 
         Plug 'mbbill/undotree'
 
-        "Cheat.sh"
-        Plug 'RishabhRD/popfix'
-        Plug 'RishabhRD/nvim-cheat.sh'
+        " cscope_maps dependencies
+        Plug 'dhananjaylatkar/cscope_maps.nvim'
+        Plug 'folke/which-key.nvim'
+
     endif
 
 endif
