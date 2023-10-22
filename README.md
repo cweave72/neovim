@@ -99,7 +99,7 @@ Initialization order:
 ~/.vim/vimrc
  |--> $VIMUSERLOCALFILES/vimrc-vars.vim
      |--> $VIMUSERLOCALFILES/vimrc-after.vim
-          |--> plugins.vim
+          |--> plugins_after.vim
           |
           ... (vim initialization completes)
           |
@@ -113,22 +113,53 @@ Initialization order:
 
 ### Plugins
 
-Handling external plugins (outside of Doc Mike's provided list) is now handled
-via the `vim-plug` plugin. This plugin is bootstrapped in the `plugins.vim`
-file. The plug.vim is located locally and copied to where it needs to be based
-on whether vim or nvim is runnning: 
+`github.com/drmikehenry/vimfiles` is considered the base configuration which we
+are extending.  Any plugins not provided in the base config are managed with the
+`vim-plug` plugin and managed through the `plugins_after.vim` script.  Installed
+plugins are stored locally in the `plugged/` directory. 
 
-Doc Mike's configuration is considered the base configuration which we are
-extending.  Neovim-specific plugins are provided in his `vimfiles/nvim/bundle`
-directory. To use these plugins and add any other plugins which are not
-provided as standard in his config, the `plugins_after.vim` file is sourced in
-my vimrc-after.vim script.
+Several common Neovim-specific plugins are provided in the base config under the
+`vimfiles/nvim/bundle` directory. To add any other plugins which are not
+provided as standard in his config, the `plugins_after.vim` file is sourced from
+the vimrc-after.vim script.
+
+> Note:
+> The plugins specified in `vimfiles/nvim/bundle` must be included in the
+> `plugins_after.vim` script so that they are added to the runtimepath and
+> properly loaded (i.e. their `<name>/plugin/<name>.lua` script must be
+> sourced).  See example below on how to add base plugins for use. Once a plugin
+> has been registered with vim-plug, custom configurations may be made.
+
+```vim
+" Path to Doc Mike's NVIM-specific bundles.
+let nvim_bundle = $HOME . '/.vim/nvim/bundle/'
+
+call plug#begin(plugged)
+...
+"Add bundled plugins provided by base config:
+Plug nvim_bundle . 'cmp'
+Plug nvim_bundle . 'cmp-buffer'
+Plug nvim_bundle . 'cmp-cmdline'
+Plug nvim_bundle . 'cmp-nvim-lsp'
+Plug nvim_bundle . 'cmp-nvim-ultisnips'
+Plug nvim_bundle . 'cmp-path'
+Plug nvim_bundle . 'lspconfig'
+Plug nvim_bundle . 'null-ls'
+Plug nvim_bundle . 'plenary'
+Plug nvim_bundle . 'telescope'
+Plug nvim_bundle . 'which-key'
+
+call plug#end()
+```
+
+After running nvim after a fresh checkout, run :PlugInstall to gather any
+plugins specified in `plugins_after.vim`.
 
 Neovim plugins (lua):
 
-Plugin-specific lua configuration should be located in the `vimlocal/lua/user/`
-directory. Nvim will look for lua files for loading in a `lua/` directory on the
-runtimepath.
+Plugin-specific lua configurations should be located under the
+`vimlocal/lua/user/` directory. Nvim will look for lua files for loading in a
+`user/lua/` directory on the runtimepath.
 
 ### Updating Plugins
 
@@ -142,9 +173,9 @@ Execute the following to manually run plug.vim:
 Example:
 
 ```vim
-      Plug 'nvim-tree/nvim-tree.lua' { 'tag': 'compat-nvim-0.7' }
-      **or**
-      Plug 'nvim-tree/nvim-tree.lua' { 'branch': '<name of branch>' }
+Plug 'nvim-tree/nvim-tree.lua' { 'tag': 'compat-nvim-0.7' }
+**or**
+Plug 'nvim-tree/nvim-tree.lua' { 'branch': '<name of branch>' }
 ```
 
 ### LSP Setup
