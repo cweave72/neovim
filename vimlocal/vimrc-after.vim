@@ -30,9 +30,9 @@ colo szakdark
 function NvimStartup()
     if has('nvim')
         " If telescope is not installed, assume no plugins are installed.
-        if !exists(":Telescope")
-            PlugInstall --sync
-        endif
+        "if !exists(":Telescope")
+        "    PlugInstall --sync
+        "endif
 
         "Run initializations.
         lua require('user.init')
@@ -44,8 +44,7 @@ endfunction
 autocmd VimEnter * call NvimStartup()
 
 " Source script which manages extra plugins not provided by base config.
-"source ~/linuxconfig/vimlocal/plugins.vim
-source $VIMUSERLOCALFILES/plugins.vim
+source $VIMUSERLOCALFILES/plugins_after.vim
 
 " Custom plugins:
 source $VIMUSERLOCALFILES/custom_plugins/docsync/plugin/docsync.vim
@@ -105,4 +104,4 @@ let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 " ------------------------------------------------------------------------------
 "let g:ranger_replace_netrw = 1
 
-let g:undotree_WindowLayout=2
+"let g:undotree_WindowLayout=2

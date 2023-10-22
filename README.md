@@ -29,11 +29,13 @@ Table of Contents
 
 ## How to set up Doc Mike's vimfiles as the baseline config
 
+This Neovim configuration is based on using Doc Mike's repo as the base config.
+
 Clone Doc Mike's vimfiles repo:
 
     git clone https://github.com/drmikehenry/vimfiles
 
-Set up symbolic link:
+Set up symbolic link to point to `vimfiles`:
 
     cd ~
     ln -s /path/to/vimfiles .vim
@@ -49,38 +51,6 @@ The file `vimrc-vars.vim` is where we add user configurations that need to be
 done early in the initialization process. For example, this is where we can
 disable plugins from being loaded.
 
-## Building Vim from source (probably not necessary)
-
-The script `vimlocal/build_vim_from_source.sh` will pull the version of vim
-specified and builds.  When completed, `cd` into the downloaded directory and
-run:
-
-    sudo make install
-
-This will install vim to the path specified by `BUILD_PREFIX` in the script (`/usr/local`).
-
-Variables to change in the script:
-
-    VERSION     : Specifies the branch of vim/vim.git to clone.
-    PYTHON3_VER : Specifies the python3 interpreter to use when Vim uses python3
-
-## Neovim setup
-
-Neovim looks very interesting and seems to work just fine with Doc Mike's normal
-vim configuration + my vimrc-after.vim.  Below are some notes about how to set
-it up, specifically about handling nvim-only plugins.
-
-### Installing Neovim
-
-Download the desired Neovim AppImage (v0.9.1 at time of writing):
-
-    https://github.com/neovim/neovim/releases/tag/v0.9.1
-
-(I usually put AppImages in ~/AppImages/)
-Then make it executable:
-
-    chmod u+x /path/to/nvim.appimage 
-
 ### Configuring for compatibility with Doc Mike's config
 
 Neovim installation creates ~/.config/nvim.
@@ -93,24 +63,29 @@ let &packpath = &runtimepath
 source ~/.vimrc
 ```
 
+Set the user .vimrc:
+```bash
+echo "runtime vimrc" > .vimrc
+```
+
 ### Directory structure
 
-Reference: `$VIMUSERLOCALFILES = ~/linuxconfig/vimlocal`
-
-The following directory structure is used:
+The following general directory structure is used:
 
 ```
 $VIMUSERLOCALFILES/
 ├── vimrc-vars.vim                # Enable/Disable bundle plugins (pathogen)
 ├── vimrc-after.vim               # User vimrc
-├── plugins.vim                   # List of vim-plug plugins
-├── lua                           # user lua modules
-│   └── user                      # user namespace for lua inits
-│       ├── init.lua              # user init for neovim
-│       ├── lsp_config.lua        # user config for lsp's and completion
-│       └── telescope             # user plugin-specific inits
-│           ├── init.lua
-│           └── mappings.lua
+├── plugins_after.vim             # Installs plugins extended from base
+├── lua                           # User Lua moduled/inits
+│   └── user
+│       ├── cscope_maps           # Custom inits for plugins
+│       ├── nvim-tree
+│       ├── telescope
+│       ├── init.lua              # User top-level init
+│       ├── lsp_config.lua        # Configure LSPs and completion.
+│       ├── mappings.lua          # User mappings
+│       └── utils.lua             # User utils
 ├── plugged                       # output dir for vim-plug
 │   ├── plugin
 │   ├── ...
@@ -146,54 +121,11 @@ via the `vim-plug` plugin. This plugin is bootstrapped in the `plugins.vim`
 file. The plug.vim is located locally and copied to where it needs to be based
 on whether vim or nvim is runnning: 
 
-```vim
-" Bootstrap vim-plug, if necessary.
-let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
-let plugvim = $VIMUSERLOCALFILES . '/plug.vim'
-let autoload_dir = data_dir . '/autoload'
-if empty(glob(data_dir . '/autoload/plug.vim'))
-    echom "Copying " plugvim . " to " . autoload_dir
-    silent execute '!cp ' . plugvim . ' ' . autoload_dir
-endif
-```
-
-Where `plug.vim` is placed:
-
-vim: `~/.vim/autoload/`
-
-nvim: `~/.local/share/nvim/site/`
-
-With plug.vim, plugins are downloaded directly from github:
-
-```vim
-" plugins.vim
-let plugged = $VIMUSERLOCALFILES . '/plugged/'
-
-call plug#begin(plugged)
-
-" Vim or Nvim
-Plug 'francoiscabrol/ranger.vim'
-Plug 'vim-scripts/Align'
-
-" Add neovim plugins.
-if has('nvim')
-    Plug 'nvim-lua/plenary.nvim'
-    Plug 'nvim-telescope/telescope.nvim'
-    Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
-
-    "Required by ranger.vim
-    Plug 'rbgrouleff/bclose.vim'
-endif
-
-call plug#end()
-```
-
-Note: Unmanaged plugins may be added by providing a path to the plugin source,
-for example:
-
-```vim
-Plug "~/linuxconfig/vimlocal/path/to/plugin/plugin.vim"
-```
+Doc Mike's configuration is considered the base configuration which we are
+extending.  Neovim-specific plugins are provided in his `vimfiles/nvim/bundle`
+directory. To use these plugins and add any other plugins which are not
+provided as standard in his config, the `plugins_after.vim` file is sourced in
+my vimrc-after.vim script.
 
 Neovim plugins (lua):
 
@@ -205,7 +137,7 @@ runtimepath.
 
 Execute the following to manually run plug.vim:
 
-1. Installing new plugins after modifying `plugins.vim`:  `:PlugInstall --sync`
+1. Installing new plugins after modifying `plugins_after.vim`:  `:PlugInstall --sync`
 2. Updating plugins: `:PlugUpdate`
 
 ### Pin Plugin to a tag or branch
@@ -217,7 +149,6 @@ Example:
       **or**
       Plug 'nvim-tree/nvim-tree.lua' { 'branch': '<name of branch>' }
 ```
-
 
 ### LSP Setup
 

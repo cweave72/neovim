@@ -1,6 +1,5 @@
 local USER = vim.fn.expand('$USER')
 
-local nvim_lsp = require 'lspconfig'
 
 -- helper for normal-mode mappings
 local buf_nmap = function(key, cmd)
@@ -37,14 +36,14 @@ end
 
 
 -- Completion setup
---
-vim.o.completeopt = 'menuone,noselect'
+vim.o.completeopt = 'menu,menuone,noselect,noinsert,preview'
 
 -- nvim-cmp setup
+local nvim_lsp = require('lspconfig')
 local cmp = require('cmp')
 
-cmp.setup {
-    mapping = {
+cmp.setup({
+    mapping = cmp.mapping.preset.insert({
         ['<C-p>'] = cmp.mapping.select_prev_item(),
         ['<C-n>'] = cmp.mapping.select_next_item(),
         ['<C-d>'] = cmp.mapping.scroll_docs(-4),
@@ -55,14 +54,17 @@ cmp.setup {
             behavior = cmp.ConfirmBehavior.Replace,
             select = true,
         },
+    }),
+    completion = {
+        keyword_length = 1,
     },
-    sources = {
+    sources = cmp.config.sources({
         -- Order implies priority here:
-        { name = 'nvim_lua' },
         { name = 'nvim_lsp' },
-        { name = 'luasnip' },
-        { name = 'buffer' , keyword_length = 5 },
-    },
+        { name = 'buffer' , keyword_length = 3 },
+        --{ name = 'nvim_lua' },
+        --{ name = 'luasnip' },
+    }),
     snippet = {
         expand = function(args)
             require('luasnip').lsp_expand(args.body)
@@ -71,12 +73,18 @@ cmp.setup {
     experimental = {
         native_menu = false,
     }
-}
+})
+
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
+--local utils = require('user.utils')
+--utils.debug_print(cmp.setup)
 
 -- Sumneko Lua LSP
 --
 local sumneko_root_path = "/home/" .. USER .. "/.local/lua-language-server"
 local sumneko_binary    = "/home/" .. USER .. "/.local/lua-language-server/bin/lua-language-server"
+
 
 nvim_lsp.lua_ls.setup {
     on_attach = on_attach,
@@ -110,6 +118,7 @@ nvim_lsp.lua_ls.setup {
 --
 nvim_lsp.pylsp.setup {
     on_attach = on_attach,
+    capabilities = capabilities,
     cmd = {'/usr/local/bin/pyls'},
     settings = {
         pyls = {

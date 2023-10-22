@@ -32,14 +32,14 @@ telescope.setup({
              ".gitignore"
         },
     },
-    extensions = {
-        fzf = {
-            fuzzy = true,                     -- false does exact matching
-            override_generic_sorter = true,
-            override_file_sorter = true,
-            case_mode = "smart_case",         -- or "ignore_case", "respect_case"
-        },
-    },
+    --extensions = {
+    --    fzf = {
+    --        fuzzy = true,                     -- false does exact matching
+    --        override_generic_sorter = true,
+    --        override_file_sorter = true,
+    --        case_mode = "smart_case",         -- or "ignore_case", "respect_case"
+    --    },
+    --},
     ---pickers = {
     ---    find_files = {
     ---        theme = "dropdown",
@@ -47,7 +47,7 @@ telescope.setup({
     ---},
 })
 
-telescope.load_extension('fzf')
+--telescope.load_extension('fzf')
 
 
 local M = {}
