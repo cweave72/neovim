@@ -2,10 +2,7 @@
 Table of Contents
 -----------------
 * [Vim Configuration](#vim-configuration)
-  * [How to set up Doc Mike's vimfiles](#how-to-set-up-doc-mike's-vimfiles)
-  * [Building Vim from source (probably not necessary)](#building-vim-from-source-(probably-not-necessary))
-  * [Neovim setup](#neovim-setup)
-    * [Installing](#installing)
+  * [How to set up Doc Mike's vimfiles as the baseline config](#how-to-set-up-doc-mike's-vimfiles-as-the-baseline-config)
     * [Configuring for compatibility with Doc Mike's config](#configuring-for-compatibility-with-doc-mike's-config)
     * [Directory structure](#directory-structure)
     * [Initialization with Neovim](#initialization-with-neovim)
