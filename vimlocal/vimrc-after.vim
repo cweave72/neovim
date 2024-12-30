@@ -51,6 +51,8 @@ source $VIMUSERLOCALFILES/custom_plugins/docsync/plugin/docsync.vim
 let g:Docsync_loglevel = "info"
 let g:Docsync_enable_logging = 1
 
+" Specify python provider (a virtual env with pynvim installed)
+let g:python3_host_prog = expand('~/.pynvim/bin/python')
 
 if $TERM == 'rxvt-unicode'
     "set t_Co=256

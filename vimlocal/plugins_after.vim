@@ -38,6 +38,9 @@ if has('nvim')
     " cscope_maps dependencies
     Plug 'dhananjaylatkar/cscope_maps.nvim'
 
+    " Oil.nvim
+    Plug 'stevearc/oil.nvim'
+
     "Add Doc Mike baseline bundled plugins.
     Plug nvim_bundle . 'cmp'
     Plug nvim_bundle . 'cmp-buffer'

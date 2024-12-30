@@ -15,6 +15,7 @@ require('user.telescope.init')
 require('user.mappings')
 require('user.nvim-tree.init')
 require('user.cscope_maps.init')
+require('user.oil.init')
 
 
 -- Custom functions

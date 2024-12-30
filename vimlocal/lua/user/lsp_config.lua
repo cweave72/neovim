@@ -113,52 +113,111 @@ nvim_lsp.lua_ls.setup {
     }
 }
 
+-- Python ruff 
+--
+nvim_lsp.ruff.setup {
+    on_attach = on_attach,
+    capabilities = capabilities,
+    init_options = {
+       settings = {
+         -- Any extra CLI arguments for `ruff` go here.
+         lineLength = 80,
+         fixAll = true,
+         organizeImports = true,
+         format = {
+            preview = true,
+         },
+         lint = {
+            enable = true,
+            preview = true,
+            ignore = {},
+            extendIgnore = {},
+         },
+         args = {},
+       }
+    },
+    commands = {
+        RuffAutofix = {
+            function()
+                vim.lsp.buf.execute_command {
+                    command = 'ruff.applyAutofix',
+                    arguments = {
+                        { uri = vim.uri_from_bufnr(0) },
+                    },
+                }
+            end,
+            description = 'Ruff: Fix all auto-fixable problems',
+        },
+        RuffFormat = {
+            function()
+                vim.lsp.buf.execute_command {
+                    command = 'ruff.applyFormat',
+                    arguments = {
+                        { uri = vim.uri_from_bufnr(0), version = 0 },
+                    },
+                }
+            end,
+            description = 'Ruff: Run formatter',
+        },
+        RuffOrganizeImports = {
+            function()
+                vim.lsp.buf.execute_command {
+                    command = 'ruff.applyOrganizeImports',
+                    arguments = {
+                        { uri = vim.uri_from_bufnr(0) },
+                    },
+                }
+            end,
+            description = 'Ruff: Format imports',
+        },
+    },
+}
 
 -- Python LSP (pyls)
 --
-nvim_lsp.pylsp.setup {
-    on_attach = on_attach,
-    capabilities = capabilities,
-    cmd = {'/usr/local/bin/pyls'},
-    settings = {
-        pyls = {
-            plugins = {
-                pycodestyle = {
-                    enabled = true,
-                    ignore = {"E203", "E221", "E226", "E731", "E261", "E265", "E501"},
-                },
-                pylint = {
-                    enabled = false,
-                }
-            },
-        }
-    }
-}
+--nvim_lsp.pylsp.setup {
+--    on_attach = on_attach,
+--    capabilities = capabilities,
+--    cmd = {'/usr/local/bin/pyls'},
+--    settings = {
+--        pyls = {
+--            plugins = {
+--                pycodestyle = {
+--                    enabled = true,
+--                    ignore = {"E203", "E221", "E226", "E731", "E261", "E265", "E501"},
+--                },
+--                pylint = {
+--                    enabled = false,
+--                }
+--            },
+--        }
+--    }
+--}
 
 -- C (ccls)
 --
-nvim_lsp.ccls.setup {
-    on_attach = on_attach,
-    cmd = { "ccls" },
-    init_options = {
-        compilationDatabaseDirectory = "build",
-        index = {
-            threads = 0,
-        },
-        clang = {
-            excludeArgs = { "-frounding-math" },
-        },
-    }
-}
+--nvim_lsp.ccls.setup {
+--    on_attach = on_attach,
+--    cmd = { "ccls" },
+--    init_options = {
+--        compilationDatabaseDirectory = "build",
+--        index = {
+--            threads = 0,
+--        },
+--        clang = {
+--            excludeArgs = { "-frounding-math" },
+--        },
+--    }
+--}
 
 -- bash
 --
-nvim_lsp.bashls.setup {
-    on_attach = on_attach,
-    cmd = { "bash-language-server", "start" },
-    cmd_env = {
-        GLOB_PATTERN = "*@(.sh|.inc|.bash|.command)"
-    },
-    filetypes = { "sh" },
-    single_file_support = true,
-}
+--nvim_lsp.bashls.setup {
+--    on_attach = on_attach,
+--    cmd = { "bash-language-server", "start" },
+--    cmd_env = {
+--        GLOB_PATTERN = "*@(.sh|.inc|.bash|.command)"
+--    },
+--    filetypes = { "sh" },
+--    single_file_support = true,
+--}
